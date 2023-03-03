@@ -28,3 +28,33 @@
 //добавляем файлы: in.txt для ввода и out.txt для вывода
 //разбиваем задачу на методы
 //try..catch
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Task01 {
+  final public static String SEP = " ";
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    Map<String, Integer> presidentsVoices = new HashMap<>();
+    int number = Integer.parseInt(br.readLine());
+    for (int i = 0; i < number; ++i) {
+      String presidentVoice = br.readLine();
+      int sepPoz = presidentVoice.indexOf(SEP);
+      String namePresident = presidentVoice.substring(0, sepPoz);
+      int voices = Integer.parseInt(presidentVoice.substring(sepPoz + 1));
+      if (presidentsVoices.containsKey(namePresident)) {
+        voices += presidentsVoices.get(namePresident);
+      }
+      presidentsVoices.put(namePresident, voices);
+    }
+    for (String president: presidentsVoices.keySet()) {
+      int voices = presidentsVoices.get(president);
+      System.out.println(president + " " + voices);
+    }
+  }
+}
