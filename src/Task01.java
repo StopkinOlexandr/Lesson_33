@@ -30,31 +30,36 @@
 //try..catch
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Task01 {
   final public static String SEP = " ";
+
   public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    File inputFilePath = new File("res/in.txt");
+    File outputFilePath = new File("res/out.txt");
     Map<String, Integer> presidentsVoices = new HashMap<>();
-    int number = Integer.parseInt(br.readLine());
+    BufferedReader inputFileReader = new BufferedReader(new FileReader(inputFilePath));
+    int number = Integer.parseInt(inputFileReader.readLine());
     for (int i = 0; i < number; ++i) {
-      String presidentVoice = br.readLine();
-      int sepPoz = presidentVoice.indexOf(SEP);
-      String namePresident = presidentVoice.substring(0, sepPoz);
-      int voices = Integer.parseInt(presidentVoice.substring(sepPoz + 1));
-      if (presidentsVoices.containsKey(namePresident)) {
-        voices += presidentsVoices.get(namePresident);
+      String row = inputFileReader.readLine();
+      int sepPoz = row.indexOf(SEP);
+      String name = row.substring(0, sepPoz);
+      int voice = Integer.parseInt(row.substring(sepPoz + 1));
+      if (presidentsVoices.containsKey(name)) {
+        voice += presidentsVoices.get(name);
       }
-      presidentsVoices.put(namePresident, voices);
+      presidentsVoices.put(name, voice);
     }
-    for (String president: presidentsVoices.keySet()) {
+    inputFileReader.close();
+
+    FileWriter fileWriter = new FileWriter(outputFilePath);
+    for (String president : presidentsVoices.keySet()) {
       int voices = presidentsVoices.get(president);
-      System.out.println(president + " " + voices);
+      fileWriter.write(president + " " + voices + "\n");
     }
+    fileWriter.close();
   }
 }
