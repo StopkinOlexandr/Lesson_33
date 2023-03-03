@@ -40,24 +40,32 @@ public class Task01 {
   public static void main(String[] args) throws IOException {
     File inputFilePath = new File("res/in.txt");
     File outputFilePath = new File("res/out.txt");
-    Map<String, Integer> presidentsVoices = new HashMap<>();
+//    Map<String, Integer> presidentsVoices = new HashMap<>();
     writeToFile(readFromFile(inputFilePath), outputFilePath);
   }
   public static Map<String, Integer> readFromFile(File filename) throws IOException {
     Map<String, Integer> presidentsVoices = new HashMap<>();
-    BufferedReader inputFileReader = new BufferedReader(new FileReader(filename));
-    int number = Integer.parseInt(inputFileReader.readLine());
-    for (int i = 0; i < number; ++i) {
-      String row = inputFileReader.readLine();
-      int sepPoz = row.indexOf(SEP);
-      String name = row.substring(0, sepPoz);
-      int voice = Integer.parseInt(row.substring(sepPoz + 1));
-      if (presidentsVoices.containsKey(name)) {
-        voice += presidentsVoices.get(name);
+    try {
+      BufferedReader inputFileReader = new BufferedReader(new FileReader(filename));
+      int number = Integer.parseInt(inputFileReader.readLine());
+      for (int i = 0; i < number; ++i) {
+        String row = inputFileReader.readLine();
+        int sepPoz = row.indexOf(SEP);
+        String name = row.substring(0, sepPoz);
+        int voice = Integer.parseInt(row.substring(sepPoz + 1));
+        if (presidentsVoices.containsKey(name)) {
+          voice += presidentsVoices.get(name);
+        }
+        presidentsVoices.put(name, voice);
       }
-      presidentsVoices.put(name, voice);
+      inputFileReader.close();
+    } catch (NumberFormatException e) {
+      System.out.println("Wrong number format" + e.getMessage());
+    } catch (FileNotFoundException e) {
+      System.out.println("File not found" + e.getMessage());
+    } catch (EOFException e) {
+      System.out.println("Unexpected end of file");
     }
-    inputFileReader.close();
     return presidentsVoices;
   }
   public static void writeToFile (Map<String, Integer> presidentsVoices,
