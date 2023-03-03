@@ -41,7 +41,11 @@ public class Task01 {
     File inputFilePath = new File("res/in.txt");
     File outputFilePath = new File("res/out.txt");
     Map<String, Integer> presidentsVoices = new HashMap<>();
-    BufferedReader inputFileReader = new BufferedReader(new FileReader(inputFilePath));
+    writeToFile(readFromFile(inputFilePath), outputFilePath);
+  }
+  public static Map<String, Integer> readFromFile(File filename) throws IOException {
+    Map<String, Integer> presidentsVoices = new HashMap<>();
+    BufferedReader inputFileReader = new BufferedReader(new FileReader(filename));
     int number = Integer.parseInt(inputFileReader.readLine());
     for (int i = 0; i < number; ++i) {
       String row = inputFileReader.readLine();
@@ -54,8 +58,11 @@ public class Task01 {
       presidentsVoices.put(name, voice);
     }
     inputFileReader.close();
-
-    FileWriter fileWriter = new FileWriter(outputFilePath);
+    return presidentsVoices;
+  }
+  public static void writeToFile (Map<String, Integer> presidentsVoices,
+                                  File filename) throws IOException {
+    FileWriter fileWriter = new FileWriter(filename);
     for (String president : presidentsVoices.keySet()) {
       int voices = presidentsVoices.get(president);
       fileWriter.write(president + " " + voices + "\n");
